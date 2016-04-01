@@ -23,6 +23,8 @@ test.before('setup', async t => {
     s.on('/rss', event('./data/rss.xml', 'text/xml'));
     s.on('/nofavicon', event('./data/nofavicon.html', 'text/html'));
     s.on('/nourl', event('./data/nourl.xml', 'text/xml'));
+    s.on('/sample1', event('./data/fushigi.html', 'text/html'));
+    s.on('/sample2', event('./data/asahi-youtube.html', 'text/html'));
 
     s.on('/favicon.ico', (req, res) => {
         res.statusCode = 500;
@@ -40,12 +42,14 @@ test('check response', async t => {
     const res3 = await rssFinder(`${s.url}/rss`);
     const res4 = await rssFinder(`${s.url}/nofavicon`);
     const res5 = await rssFinder(`${s.url}/nourl`);
+    const res6 = await rssFinder(`${s.url}/sample1`);
+    const res7 = await rssFinder(`${s.url}/sample2`);
 
     function testResponse(res) {
         t.is(res.site.title, 'RSSFinder');
         t.is(res.site.favicon, `${s.url}/favicon.ico`);
         t.is(res.site.url, `${s.url}/html`);
-        t.is(res.feedUrls[0].title, 'RSS');
+        t.is(res.feedUrls[0].title, 'RSSFinder');
         t.is(res.feedUrls[0].url, `${s.url}/rssfinder.xml`);
     }
 
@@ -61,7 +65,7 @@ test('check response', async t => {
     t.is(res4.site.title, 'RSSFinder');
     t.is(res4.site.favicon, null);
     t.is(res4.site.url, `${s.url}/nofavicon`);
-    t.is(res4.feedUrls[0].title, 'RSS');
+    t.is(res4.feedUrls[0].title, 'RSSFinder');
     t.is(res4.feedUrls[0].url, `${s.url}/rssfinder.xml`);
 
     t.is(res5.site.title, 'Index - 24óra');
@@ -69,6 +73,18 @@ test('check response', async t => {
     t.is(res5.site.url, 'http://index.hu/24ora/');
     t.is(res5.feedUrls[0].title, 'Index - 24óra');
     t.is(res5.feedUrls[0].url, `${s.url}/nourl`);
+ 
+    t.is(res6.site.title, '不思議.net');
+    t.is(res6.site.favicon, 'http://livedoor.blogimg.jp/worldfusigi/imgs/d/a/favicon.ico');
+    t.is(res6.feedUrls[0].title, '不思議.net');
+    t.is(res6.feedUrls[0].url, 'http://world-fusigi.net/index.rdf');
+    t.is(res6.feedUrls.length, 1);
+
+    t.is(res7.site.title, '  朝日新聞社\n - YouTube');
+    t.is(res7.site.favicon, 'http://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png');
+    t.is(res7.feedUrls[0].title, '  朝日新聞社\n - YouTube');
+    t.is(res7.feedUrls[0].url, 'https://www.youtube.com/feeds/videos.xml?channel_id=UCMKvT0YVLufHMdGLH89J1oA');
+    t.is(res7.feedUrls.length, 1);
 });
 
 test('fail xml', async t => {

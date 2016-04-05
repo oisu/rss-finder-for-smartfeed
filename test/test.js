@@ -25,6 +25,7 @@ test.before('setup', async t => {
     s.on('/nourl', event('./data/nourl.xml', 'text/xml'));
     s.on('/sample1', event('./data/fushigi.html', 'text/html'));
     s.on('/sample2', event('./data/asahi-youtube.html', 'text/html'));
+    s.on('/sample3', event('./data/gigazine.html', 'text/html'));
 
     s.on('/favicon.ico', (req, res) => {
         res.statusCode = 500;
@@ -44,6 +45,7 @@ test('check response', async t => {
     const res5 = await rssFinder(`${s.url}/nourl`);
     const res6 = await rssFinder(`${s.url}/sample1`);
     const res7 = await rssFinder(`${s.url}/sample2`);
+    const res8 = await rssFinder(`${s.url}/sample3`);
 
     function testResponse(res) {
         t.is(res.site.title, 'RSSFinder');
@@ -85,6 +87,11 @@ test('check response', async t => {
     t.is(res7.feedUrls[0].title, '  朝日新聞社\n - YouTube');
     t.is(res7.feedUrls[0].url, 'https://www.youtube.com/feeds/videos.xml?channel_id=UCMKvT0YVLufHMdGLH89J1oA');
     t.is(res7.feedUrls.length, 1);
+
+    t.is(res8.site.favicon, 'http://gigazine.net/favicon.ico');
+    t.is(res8.feedUrls[0].title, 'GIGAZINE RSS Feed');
+    t.is(res8.feedUrls[0].url, 'http://gigazine.net/news/rss_2.0/');
+    t.is(res8.feedUrls.length, 1);
 });
 
 test('fail xml', async t => {

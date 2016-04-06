@@ -82,9 +82,9 @@ test('check response', async t => {
     t.is(res6.feedUrls[0].url, 'http://world-fusigi.net/index.rdf');
     t.is(res6.feedUrls.length, 1);
 
-    t.is(res7.site.title, '  朝日新聞社\n - YouTube');
+    t.is(res7.site.title, '  朝日新聞社 - YouTube');
     t.is(res7.site.favicon, 'http://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png');
-    t.is(res7.feedUrls[0].title, '  朝日新聞社\n - YouTube');
+    t.is(res7.feedUrls[0].title, '  朝日新聞社 - YouTube');
     t.is(res7.feedUrls[0].url, 'https://www.youtube.com/feeds/videos.xml?channel_id=UCMKvT0YVLufHMdGLH89J1oA');
     t.is(res7.feedUrls.length, 1);
 

@@ -90,7 +90,7 @@ test('check response', async t => {
 
     t.is(res8.site.favicon, 'http://gigazine.net/favicon.ico');
     t.is(res8.feedUrls[0].title, 'GIGAZINE RSS Feed');
-    t.is(res8.feedUrls[0].url, 'http://gigazine.net/news/rss_2.0/');
+    t.is(res8.feedUrls[0].url, 'http://gigazine.net/news/rss_2.0');
     t.is(res8.feedUrls.length, 1);
 });
 

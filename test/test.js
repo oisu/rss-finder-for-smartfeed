@@ -26,6 +26,7 @@ test.before('setup', async t => {
     s.on('/sample1', event('./data/fushigi.html', 'text/html'));
     s.on('/sample2', event('./data/asahi-youtube.html', 'text/html'));
     s.on('/sample3', event('./data/gigazine.html', 'text/html'));
+    s.on('/sample4', event('./data/secu.html', 'text/html'));
 
     s.on('/favicon.ico', (req, res) => {
         res.statusCode = 500;
@@ -46,6 +47,7 @@ test('check response', async t => {
     const res6 = await rssFinder(`${s.url}/sample1`);
     const res7 = await rssFinder(`${s.url}/sample2`);
     const res8 = await rssFinder(`${s.url}/sample3`);
+    const res9 = await rssFinder(`${s.url}/sample4`);
     //
     //function testResponse(res) {
     //    t.is(res.site.title, 'RSSFinder');
@@ -78,7 +80,7 @@ test('check response', async t => {
     t.is(res6.site.title, '不思議.net');
     t.is(res6.site.favicon, 'http://livedoor.blogimg.jp/worldfusigi/imgs/d/a/favicon.ico');
     t.is(res6.feedUrls[0].title, '不思議.net');
-    t.is(res6.feedUrls[0].url, 'http://world-fusigi.net/index.rdf');
+    t.is(res6.feedUrls[0].url, 'http://world-fusigi.net/atom.xml');
     t.is(res6.feedUrls.length, 1);
 
     t.is(res7.site.title, '  朝日新聞社 - YouTube');
@@ -91,6 +93,16 @@ test('check response', async t => {
     t.is(res8.feedUrls[0].title, 'GIGAZINE RSS Feed');
     t.is(res8.feedUrls[0].url, 'http://gigazine.net/news/rss_2.0');
     t.is(res8.feedUrls.length, 1);
+
+    t.is(res9.site.title, 'セキュリティホール memo');
+    t.is(res9.feedUrls[0].title, 'memo RSS');
+    t.is(res9.feedUrls[0].url, 'http://www.st.ryukoku.ac.jp/~kjm/security/memo/memo.rdf');
+    t.is(res9.feedUrls[1].title, 'memo RSS by Neun');
+    t.is(res9.feedUrls[1].url, 'http://neun9.sakura.ne.jp/web2rss/shm.xml');
+    t.is(res9.feedUrls[2].title, 'memo RSS more');
+    t.is(res9.feedUrls[2].url, 'http://www.st.ryukoku.ac.jp/~kjm/security/memo/memop.rdf');
+    t.is(res9.feedUrls.length, 3);
+
 });
 
 
